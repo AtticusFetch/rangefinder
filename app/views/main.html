@@ -1,2 +1,8 @@
 <div class="jumbotron">
+  <h1>Select text file</h1>
+  <input type="file" on-read-file="showContent($fileContent)" />
+  <canvas id="room" width="1000" height="800"></canvas>
+  <div ng-if="content">
+    {{content}}
+  </div>
 </div>

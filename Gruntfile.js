@@ -28,14 +28,14 @@ module.exports = function (grunt) {
   grunt.initConfig({
     // Project settings
     yeoman: appConfig,
-    
+
     //Heroku Settings
     mkdir: {
       heroku: {
         options: {
           create: ['heroku']
-        },
-      },
+        }
+      }
     },
 
     //Heroku Settings
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
             files: [{
                 //Create Procfile required by Heroku
                 file: 'heroku/Procfile',
-                method: function(fs, fd, done) {  
+                method: function(fs, fd, done) {
                     fs.writeSync(fd, 'web: node server.js');
                     done();
                 }
@@ -142,7 +142,7 @@ module.exports = function (grunt) {
                 'heroku open --app ' + herokuAppName
             ].join('&&')
         }
-    }, 
+    },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -264,7 +264,7 @@ module.exports = function (grunt) {
             '!<%= yeoman.dist %>/Procfile',
             '!<%= yeoman.dist %>/package.json',
             '!<%= yeoman.dist %>/server.js',
-            '!<%= yeoman.dist %>/.gitignore'              
+            '!<%= yeoman.dist %>/.gitignore'
           ]
         }]
       },
@@ -280,7 +280,7 @@ module.exports = function (grunt) {
                   '!heroku/.Procfile'
               ]
           }]
-      },       
+      },
       server: '.tmp'
     },
 
@@ -291,7 +291,7 @@ module.exports = function (grunt) {
       },
       server: {
         options: {
-          map: true,
+          map: true
         },
         files: [{
           expand: true,
@@ -491,7 +491,7 @@ module.exports = function (grunt) {
                   '**'
               ]
           }]
-      },       
+      },
       dist: {
         files: [{
           expand: true,
@@ -536,7 +536,7 @@ module.exports = function (grunt) {
       ],
       dist: [
         'copy:styles',
-        'imagemin',
+        //'imagemin',
         'svgmin'
       ]
     },
@@ -599,7 +599,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'test',
     'build'
   ]);
 
