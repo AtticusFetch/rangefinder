@@ -636,7 +636,7 @@ module.exports = function (grunt) {
                   'shell:heroku-create',
                   'shell:heroku-git-init',
                   'shell:heroku-git-push',
-                  'shell:heroku-dyno',
+                  'shell:heroku-dyno'
               ]);
               break;
           case 'push':

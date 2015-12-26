@@ -1,27 +1,39 @@
 <div class="jumbotron" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-  <div class="file-input">
-    <input type="file" on-read-file="showContent($fileContent)"/>
-  </div>
-  <div class="settings">
-    <label for="dotSize">Set Dot Size</label>
-    <input ng-disabled="dataLoaded" id="dotSize" ng-model="dotSize" type="number"/>
-    <label for="scale">Scale</label>
-    <input ng-disabled="dataLoaded" id="scale" ng-model="drawingScale" type="number"/>
-    <label for="center">Center</label>
-    <input ng-disabled="dataLoaded" id="center" ng-model="centerScale" type="number"/>
-    <label for="xAdj">X adjustment</label>
-    <input ng-disabled="dataLoaded" id="xAdj" ng-model="xAdj" type="number"/>
-    <label for="yAdj">Y Adjustment</label>
-    <input ng-disabled="dataLoaded" id="yAdj" ng-model="yAdj" type="number"/>
-    <label for="connect">Connect dots ?</label>
-    <input ng-disabled="dataLoaded" id="connect" ng-model="connect" type="checkbox"/>
-  </div>
-  <div class="range-finder-matrix">
-    <h4>Range Finder position Matrix</h4>
+  <div class="control-panel">
+    <div class="file-input">
+      <input type="file" on-read-file="showContent($fileContent)"/>
+    </div>
+    <div class="settings">
+      <label for="dotSize">Set Dot Size</label>
+      <input ng-disabled="dataLoaded" id="dotSize" ng-model="dotSize" type="number"/>
+      <!--<label for="scale">Scale</label>-->
+      <!--<input ng-disabled="dataLoaded" id="scale" ng-model="drawingScale" type="number"/>-->
+      <!--<label for="center">Center</label>-->
+      <!--<input ng-disabled="dataLoaded" id="center" ng-model="centerScale" type="number"/>-->
+      <div><label for="xAdj">X adjustment</label>
+        <input ng-disabled="dataLoaded" id="xAdj" ng-model="xAdj" type="number"/></div>
+      <div><label for="yAdj">Y Adjustment</label>
+        <input ng-disabled="dataLoaded" id="yAdj" ng-model="yAdj" type="number"/></div>
+      <div><label for="connect">Connect dots ?</label>
+        <input ng-disabled="dataLoaded" id="connect" ng-model="connect" type="checkbox"/></div>
+      <div><input id="gap" ng-model="gap" type="number"/>
+        <label for="gap">filter gap</label></div>
+      <button ng-click="doTransform()">Transform coordinates</button>
+      <button ng-click="doFilter()">Filter</button>
+      <button ng-click="doSort()">Clear lags</button>
+      <button ng-click="doExpFilter()">Exp Filter</button>
+      <button ng-click="doDistExpFilter()">Distance Medianne Filter</button>
+      <button ng-click="medianneFilter()">Medianne Filter</button>
+    </div>
+    <div class="range-finder-matrix">
+      <h4>Range Finder position Matrix</h4>
 
-    <div class="row" ng-repeat="row in rangeFinderPosMatrix">
-      <input ng-disabled="dataLoaded" class="rangeMatrixVal" ng-model="rangeFinderPosMatrix[$parent.$index][$index]" type="number"
-             ng-repeat="cell in row track by $index"/>
+      <div class="row" ng-repeat="row in rangeFinderPosMatrix">
+        <input ng-disabled="dataLoaded" class="rangeMatrixVal" ng-model="rangeFinderPosMatrix[$parent.$index][$index]"
+               type="number"
+               ng-repeat="cell in row track by $index"/>
+      </div>
+      <button ng-click="updatePositionMatrix()">Submit</button>
     </div>
   </div>
   <canvas id="room" width="1500" height="1300"></canvas>

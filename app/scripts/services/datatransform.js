@@ -24,4 +24,17 @@ angular.module('rangeFinderApp')
       }
       return data;
     };
+    this.medianneFilter = function (gap, data) {
+      for(var i = 0; i < data.length; i += gap) {
+        var xDiff = data[i].x, yDiff = data[i].y;
+        for(var j = i; j < gap; j++) {
+          xDiff += Math.abs(xDiff - data[j].x);
+          yDiff += Math.abs(yDiff - data[j].y);
+        }
+        console.log('xDiff: ');
+        console.log(xDiff);
+        console.log('yDiff: ');
+        console.log(yDiff);
+      }
+    };
   }]);

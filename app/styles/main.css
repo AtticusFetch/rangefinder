@@ -31,14 +31,30 @@ body .header {
   margin: 0 auto;
 }
 .file-input {
-  float: left;
+  display: inline-block;
+  width: 100%;
   margin-bottom: 10px;
 }
 .settings {
   margin-bottom: 20px;
 }
+.settings > div {
+  display: inline-block;
+  width: 100%;
+}
+.settings label {
+  margin-right: 5px;
+}
+.settings input {
+  float: right;
+  max-width: 100px;
+}
 .range-finder-matrix input {
   margin-bottom: 3px;
   margin-right: 3px;
   width: 50px;
+}
+.control-panel {
+  max-width: 300px;
+  float: left;
 }

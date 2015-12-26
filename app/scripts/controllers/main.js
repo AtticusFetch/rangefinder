@@ -14,7 +14,10 @@ function MainCtrl($scope, dataTransform, helpers) {
   $scope.height = canvas.getAttribute('height');
   $scope.ctx = canvas.getContext('2d');
   $scope.data = [];
+  $scope.isRightRangeFinder = true;
+  $scope.directionParam = $scope.isRightRangeFinder ? 1 : -1;
   $scope.transformed = false;
+  $scope.noLags = false;
   var dots = [],
     originData = [],
     transformedDots = [];
@@ -25,6 +28,7 @@ function MainCtrl($scope, dataTransform, helpers) {
   $scope.rangeFinderPosMatrix = [];
   $scope.xAdj = -150;
   $scope.yAdj = -300;
+  $scope.gap = 50;
 
   for (var i = 0; i < 4; i++) {
     $scope.rangeFinderPosMatrix[i] = [];
@@ -39,6 +43,51 @@ function MainCtrl($scope, dataTransform, helpers) {
     [0, 0, 1, 265.5],
     [0, 0, 0, 1]
   ];
+
+  function doTransform() {
+    if (!$scope.transformed) {
+      $scope.data = dataTransform.toRobotCoords($scope.data, $scope.rangeFinderPosMatrix);
+      $scope.transformed = true;
+    }
+  }
+
+  function doFilter() {
+      doTransform();
+      $scope.data = helpers.clearLags($scope.data, $scope.gap);
+      reDraw();
+  }
+
+  function doSort() {
+    $scope.data = helpers.distanceSort($scope.data, $scope.gap);
+    reDraw();
+  }
+
+  function doExpFilter() {
+    $scope.data = helpers.expFilter($scope.data);
+    reDraw();
+  }
+
+  function doDistExpFilter() {
+    $scope.data = helpers.distExpFilter($scope.data);
+  }
+
+  function medianneFilter() {
+    $scope.data = helpers.medianneFilter($scope.data);
+    reDraw();
+  }
+
+  function updatePositionMatrix() {
+    $scope.data = dataTransform.toRobotCoords($scope.data, $scope.rangeFinderPosMatrix);
+    reDraw();
+  }
+
+  $scope.doTransform = doTransform;
+  $scope.doFilter = doFilter;
+  $scope.doSort = doSort;
+  $scope.doExpFilter = doExpFilter;
+  $scope.doDistExpFilter = doDistExpFilter;
+  $scope.medianneFilter = medianneFilter;
+  $scope.updatePositionMatrix = updatePositionMatrix;
 
   function Measurement(time, x, y, ang, dist) {
     this.time = time || null;
@@ -56,11 +105,11 @@ function MainCtrl($scope, dataTransform, helpers) {
         data.push(new Measurement(content[i], content[i + 1], content[i + 2], content[i + 3], content[i + 4]));
       }
     }
-    originData = data;
+    //originData = data;
     $scope.dataNotLoaded = false;
-    $scope.data = transformedDots = dataTransform.toRobotCoords(data, $scope.rangeFinderPosMatrix);
+    $scope.data = originData = data;
+    //$scope.data = transformedDots = dataTransform.toRobotCoords(data, $scope.rangeFinderPosMatrix);
     $scope.center = helpers.getMassCenter(transformedDots);
-    helpers.drawCenterCircle($scope.center, transformedDots, $scope.xAdj, $scope.yAdj, $scope.ctx);
   };
   function reDraw() {
     helpers.draw($scope, canvas, dots);
@@ -73,6 +122,8 @@ function MainCtrl($scope, dataTransform, helpers) {
   $scope.$watch('drawingScale', reDraw);
   $scope.$watch('xAdj', reDraw);
   $scope.$watch('yAdj', reDraw);
+  $scope.$watch('transformed', reDraw);
+  $scope.$watch('noLags', reDraw);
 }
 angular.module('rangeFinderApp')
   .controller('MainCtrl', ['$scope', 'dataTransform', 'helpers', MainCtrl])
